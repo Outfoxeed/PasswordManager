@@ -31,4 +31,6 @@ cryptography --> encrypting and decrypting password \
 stdiomask --> Password input (hiding the text in asterisks) \
 colorama + termcolor --> Colored messages in console
 
-
+# Possible improvements:
+Add an option to change the fernet key of a file (means the user can change the master password needed for a file)
+Add an option to generate a random password
