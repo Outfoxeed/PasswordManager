@@ -1,10 +1,17 @@
 import os
-from MyCrypto import MyCrypto
-from PasswordFile import PasswordFile
+from crypto_helpers import CryptoHelpers
+from password_file import PasswordFile
 
 class PasswordManager:
-    def __init__(self, master_password):
-        self.key = MyCrypto.generate_fernet_key(master_password)
+    def __init__(self, master_password=None, fernet_key=None):
+        if fernet_key is None:
+            if master_password is None:
+                raise Exception("Need master_password to initialize PasswordManager")
+            else:
+                self.key = CryptoHelpers.generate_fernet_key(master_password)
+        else:
+            self.key = fernet_key
+
         self.password_file = None
 
     # PasswordFile gestion

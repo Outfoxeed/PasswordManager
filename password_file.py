@@ -1,5 +1,5 @@
 import os
-from MyCrypto import MyCrypto
+from crypto_helpers import CryptoHelpers
 
 class PasswordFile:
     def __init__(self, key, path):
@@ -33,7 +33,7 @@ class PasswordFile:
         self.password_dict.clear()
         for line in self.lines:
             site, crypted_password = line.split(':')
-            self.password_dict[site] = MyCrypto.decrypt_password(key, crypted_password)
+            self.password_dict[site] = CryptoHelpers.decrypt_password(key, crypted_password)
 
     # Get info functions
     def contains(self, site):
@@ -55,7 +55,7 @@ class PasswordFile:
             print(f"PasswordFile already contains {site}")
             return False
 
-        self.lines.append(f"{site}:{MyCrypto.encrypt_password(key, password_to_add)}")
+        self.lines.append(f"{site}:{CryptoHelpers.encrypt_password(key, password_to_add)}")
 
         self.apply_lines()
         self.update_password_dict(key)
@@ -82,3 +82,13 @@ class PasswordFile:
             return False
         decrypted_site_password = self.get_password(site)
         return self.remove_password(key, site) and self.add_password(key, new_site, decrypted_site_password)
+    def clear(self):
+        with open(self.path, "w") as f:
+            f.write("")
+        self.lines = []
+        self.password_dict.clear()
+
+    # Destroy
+    def destroy(self):
+        self.clear()
+        os.remove(self.path)

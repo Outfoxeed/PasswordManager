@@ -3,7 +3,7 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-class MyCrypto:
+class CryptoHelpers:
     @staticmethod
     def generate_fernet_key(literal_password):
         kdf = PBKDF2HMAC(

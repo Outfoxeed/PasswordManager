@@ -1,5 +1,6 @@
 import os
-from Colors import *
+from colors import *
+from password_manager import PasswordManager
 
 def clear_console():
     command = 'clear'
@@ -25,6 +26,34 @@ def try_load_password_file(pm):
             print(red_text(f"Couldn't load password file at path: {path}"))
     else:
         print(red_text("No file exists at this path"))
+
+def try_changing_password_file_key(pm):
+    # Register current values and the wanted key
+    old_key = pm.key
+    new_key = input("What is the new key: ")
+    if "quit" in new_key.lower() or "stop" in new_key.lower() or "cancel" in new_key.lower():
+        print(red_text("Operation cancelled"))
+        return False
+    selected_password_file_path = pm.password_file.path
+
+    # Get the password dictionnary
+    password_dict = pm.password_file.password_dict.copy()
+
+    # Clear password file
+    pm.password_file.destroy()
+    pm.password_file = None
+
+    # Change to new key and load the same file
+    pm = PasswordManager(master_password=new_key)
+    pm.create_password_file(selected_password_file_path)
+
+    # Add passwords with the new key
+    for site, decrypted_password in password_dict.items():
+        pm.add_password(site, decrypted_password)
+
+    # Come back to old values
+    pm = PasswordManager(fernet_key=old_key)
+    print(green_text("Successfully changed the key of " + selected_password_file_path))
 
 def try_add_password(pm):
     # Ask site and password
@@ -100,13 +129,17 @@ def print_info(pm, has_valid_password_file):
     # Passwords files gestion
     print_bold("Passwords files:")
     print_dark("(1) Create new password file\n(2) Load existing password file")
+    # Change password encryption/decryption key
+    if has_valid_password_file:
+        print_dark("(3) Change PasswordFile encrypting/decrypting key")
+
     # Passwords gestion
     if has_valid_password_file:
         print_bold("\nPasswords:")
         print_dark(
-            "(3) Add a new password\n(4) Remove a password\n" +
-            "(5) Edit a password\n(6) Rename a site\n(7) Get a password\n" +
-            "(8) List the sites")
+            "(4) Add a new password\n(5) Remove a password\n" +
+            "(6) Edit a password\n(7) Rename a site\n(8) Get a password\n" +
+            "(9) List the sites")
     # Others
     print_bold("\nOthers:")
     print_dark("(p) Change Master password/Fernet key\n(c) Clear console\n(q) Quit\n")
