@@ -1,6 +1,7 @@
 import os
 from colors import *
 from password_manager import PasswordManager
+from password_generator import PasswordGenerator
 
 def clear_console():
     command = 'clear'
@@ -58,7 +59,13 @@ def try_changing_password_file_key(pm):
 def try_add_password(pm):
     # Ask site and password
     site = input("Enter the site: ")
-    password = input("Enter the password: ")
+    choice = input("Do you want a randomly generated password? (y/n) ").lower()
+    if "y" in choice:
+        length = 20
+        password = PasswordGenerator.generate(length=length)
+    else:
+        password = input("Enter the password: ")
+
     # Add password
     if pm.add_password(site, password):
         print(green_text(f"Successfully added {hidden_text(password)} for {site}"))
