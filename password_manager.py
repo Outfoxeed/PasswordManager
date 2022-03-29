@@ -30,6 +30,16 @@ class PasswordManager:
         return self.set_password_file(path)
     def has_valid_password_file(self):
         return self.password_file is not None
+    def get_password_files_list(self):
+        elements = os.listdir(os.getcwd())
+        password_files = []
+        for element in elements:
+            element_path = os.getcwd() + "\\" + element
+            if os.path.isfile(element_path) and (not element.startswith(".")):
+                file_name, file_extension = os.path.splitext(element)
+                if file_extension == "":
+                    password_files.append(element)
+        return password_files
 
     # Add / Remove / Password / Rename
     def add_password(self, site, password_to_add):

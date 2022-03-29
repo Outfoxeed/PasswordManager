@@ -1,4 +1,5 @@
 import os
+import win32clipboard
 from colors import *
 from password_manager import PasswordManager
 from password_generator import PasswordGenerator
@@ -113,10 +114,17 @@ def try_get_password(pm):
     site = input("Get the password of which site: ")
     # Found and display if found
     found_password = pm.password_file.get_password(site)
-    print(
-        f"The password of {site} is {bold_text(found_password)}"
-        if found_password is not None else f"No password found for {site}"
-    )
+
+    if "y" in input("Do you want to copy it in clipbaord: "):
+        win32clipboard.OpenClipboard()
+        win32clipboard.SetClipboardData(win32clipboard.CF_UNICODETEXT, found_password)
+        win32clipboard.CloseClipboard()
+        print(green_text(f"Password successfully copied in clipboard"))
+    else:
+        print(
+            f"The password of {site} is {bold_text(found_password)}"
+            if found_password is not None else f"No password found for {site}"
+        )
 
 
 def try_get_sites_name(pm):
@@ -135,10 +143,10 @@ def print_info(pm, has_valid_password_file):
 
     # Passwords files gestion
     print_bold("Passwords files:")
-    print_dark("(1) Create new password file\n(2) Load existing password file")
+    print_dark("(1) Create new password file\n(2) Load existing password file\n(3) Get the list of password files detected")
     # Change password encryption/decryption key
     if has_valid_password_file:
-        print_dark("(3) Change PasswordFile encrypting/decrypting key")
+        print_dark("(4) Change PasswordFile encrypting/decrypting key")
 
     # Passwords gestion
     if has_valid_password_file:

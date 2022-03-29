@@ -32,20 +32,23 @@ def main():
                 try_create_password_file(pm)
             elif user_input == "2" or user_input == "load":  # Load existing password file
                 try_load_password_file(pm)
-            elif (has_valid_password_file and user_input == "3") or user_input == "change":  # Change PasswordFile key
+            elif user_input == "3" or user_input == "files": # Get the list of password files
+                password_files_list = str(pm.get_password_files_list()).replace("[", "").replace("]", "")
+                print(f"Password files detected: {password_files_list}")
+            elif (has_valid_password_file and user_input == "4") or user_input == "change":  # Change PasswordFile key
                 try_changing_password_file_key(pm)
 
-            elif (has_valid_password_file and user_input == "4") or user_input == "add":  # Add a new password
+            elif (has_valid_password_file and user_input == "5") or user_input == "add":  # Add a new password
                 try_add_password(pm)
-            elif (has_valid_password_file and user_input == "5") or "remove" in user_input:  # Remove a password
+            elif (has_valid_password_file and user_input == "6") or "remove" in user_input:  # Remove a password
                 try_remove_password(pm)
-            elif (has_valid_password_file and user_input == "6") or user_input == "edit":  # Edit a password
+            elif (has_valid_password_file and user_input == "7") or user_input == "edit":  # Edit a password
                 try_edit_password(pm)
-            elif (has_valid_password_file and user_input == "7") or user_input == "rename":  # Rename a site
+            elif (has_valid_password_file and user_input == "8") or user_input == "rename":  # Rename a site
                 try_rename_site(pm)
-            elif (has_valid_password_file and user_input == "8") or user_input == "get":  # Get a password
+            elif (has_valid_password_file and user_input == "9") or user_input == "get":  # Get a password
                 try_get_password(pm)
-            elif (has_valid_password_file and user_input == "9") or user_input == "list":  # Get the list
+            elif (has_valid_password_file and user_input == "10") or user_input == "list":  # Get the list
                 try_get_sites_name(pm)
 
             elif user_input == "p":  # Change master password / fernet key
