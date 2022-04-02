@@ -31,6 +31,8 @@ cryptography --> encrypting and decrypting password \
 stdiomask --> Password input (hiding the text in asterisks) \
 colorama + termcolor --> Colored messages in console
 
-# Possible improvements:
-Add an option to change the fernet key of a file (means the user can change the master password needed for a file)
-Add an option to generate a random password
+# Improvements added:
+- Added an option to store a new automatically generated password
+- Added an option to change the fernet key of a file (means the user can change the master password needed for a file)
+- Added the choice to copy in clipboard a password or print it in the console
+- Added a command to get a list of PasswordFiles in the same directory as the 'main.py' file
